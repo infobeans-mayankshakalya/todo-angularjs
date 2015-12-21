@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TO-DO AngularJS - Mayank Shakalya</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+
+        <style>
+            .done-true {
+                text-decoration: line-through;
+                color: #ddd;
+              }
+              
+              li{
+                  list-style-type: none;
+              }
+              
+              
+
+        </style>
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular/angular-sanitize.min.js"></script>
+
+
+
+        <script>
+            var TDApp = angular.module('ToDoApp', ['ngSanitize']);
+
+            TDApp.controller('TodoCtrl', ['$scope', function ($scope) {
+                   
+                   $scope.todos = [];
+                   $scope.formTodoText = '';
+                   $scope.saveFlag = 'hide';
+
+                    $scope.getTotalTodos = function () {
+                        if($scope.todos.length > 0){
+                            $scope.saveFlag = 'show';
+                            return 'Total '+$scope.todos.length+' Task(s)';
+                        }
+                        else
+                            return '';
+                    };
+
+
+                    $scope.addTodo = function () {
+                        console.log($scope.formTodoText);
+                        if($scope.formTodoText != '') 
+                        {
+                            $scope.todos.push({text: $scope.formTodoText, done: false});
+                            $scope.formTodoText = '';
+                        }
+                    };
+
+                }]);
+
+
+            
+        </script>
+
+    </head>
+    <body>
+        <div ng-app="ToDoApp">
+            <!--<input id="list_title_input" placeholder="Entitle Your List" ng-change="parse_title(list_title)" ng-bind="list_title" ng-model="list_title">-->
+            <div class="container" ng-controller="TodoCtrl">
+                <div class="col-lg-6" >
+                    <fieldset>
+                        <legend>Create New List</legend>
+
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Title" ng-model="title">
+
+                        </div>
+                        <div class="form-group input-group">
+                            <input class="form-control" placeholder="Task Details" type="text" ng-model="formTodoText" ng-model-instant />
+                            <a class="input-group-addon btn" ng-click="addTodo()" href="javascript:void(0);" >Add Task</a>
+
+                        </div>
+                        <div class="form-group">
+                            
+                            <a class="btn btn-default" href="mylists.html">View Task Lists</a>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-lg-6" id="list_preview">
+                    <fieldset>
+                        <legend>List Preview</legend>
+                        <form id="create_list_form">
+                            <h3>{{ title}}</h3>
+                            <input type="text" hidden value="{{ title}}">
+                            <ul>
+                                <li>{{getTotalTodos()}}</li>
+                                <li ng-repeat="todo in todos">
+                                    <input type="checkbox" ng-model="todo.done"/>
+                                    <span class="done-{{todo.done}}">{{todo.text}}</span>
+                                </li>
+                                <li class='{{saveFlag}}'><a class="btn btn-sm btn-success" href="javascript:void(0);">Save Preview List</a></li>
+                            </ul>
+
+                        </form>
+                    </fieldset>
+                  
+                </div>
+            </div>
+            <!--            <h1 ng-bind-html="trusthtml" ><section id="" ng-bind="title"></section></h1>
+                        {{ title }}-->
+        </div>
+    </body>
+</html>
